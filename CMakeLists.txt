@@ -278,7 +278,8 @@ endif ()
 if (NOT DISABLE_GRAPHICS)
     # OpenGL + GLEW
     pkg_search_module(GLEW REQUIRED glew)
-    pkg_search_module(GLM REQUIRED glm) # TODO add to brew file
+    # pkg_search_module(GLM REQUIRED glm) # TODO add to brew file
+    find_package(glm REQUIRED CONFIG) # NOTE glm is header only, so no need to link it
     find_package(OpenGL REQUIRED)
     find_package(SDL3 CONFIG REQUIRED)
     pkg_search_module(HARFBUZZ REQUIRED harfbuzz)
@@ -373,8 +374,9 @@ if (NOT DISABLE_GRAPHICS)
     target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} PUBLIC ${GLEW_LIBRARIES})
     target_include_directories(${PROJECT_NAME} PUBLIC ${GLEW_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} PUBLIC ${GLM_LIBRARIES})
-    target_include_directories(${PROJECT_NAME} PUBLIC ${GLM_INCLUDE_DIRS})
+    # target_link_libraries(${PROJECT_NAME} PUBLIC ${GLM_LIBRARIES})
+    # target_include_directories(${PROJECT_NAME} PUBLIC ${GLM_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PUBLIC glm::glm) # NOTE glm is header only, so no need to link it
 
     # FFMPEG
     if (NOT DISABLE_VIDEO)
