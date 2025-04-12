@@ -57,7 +57,7 @@ if [ "$2" == "-vscode" ]; then
     sed \
         -e "s|\"path\": \"\"|\"path\": \"$UMFELD_ROOT\"|" \
         -e "s|\"name\": \"\"|\"name\": \"umfeld\"|" \
-        -e "/\"path\": \".\"/{n;s/\"name\": \"\"/\"name\": \"$project_name\"/}" \
+        -e "/\"path\": \".\"/{n;s/\"name\": \"\"/\"name\": \"$project_name\"/;}" \
         "$vscode_template" > "$workspace_file"
     
     echo "Created VSCode workspace: $workspace_file"
