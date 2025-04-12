@@ -36,6 +36,10 @@ install_macports() {
             ;;
         *)
             echo "Unsupported architecture: ${ARCH}"
+            echo "Please download the appropriate MacPorts installer from:"
+            echo "https://www.macports.org/install.php"
+            echo "and install it manually."
+            echo "Exiting..."
             exit 1
             ;;
     esac
