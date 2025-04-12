@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <array> // was working without in linux, but not in macos, guessing linux is permissive than the apple llvm thing
 #include <algorithm>
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>

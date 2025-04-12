@@ -310,8 +310,15 @@ bool Movie::available() {
                     }
 #endif
                 }
+// ffmpeg API backward-compat
+// see -> https://ffmpeg.org/doxygen/5.1/deprecated.html
+// TODO better check API version with #include <libavutil/version.h>
+#if LIBAVCODEC_VERSION_MAJOR < 59  // For FFmpeg <5.0
+                int channels = audioCodecContext->channels;
+#else
+                int channels = audioCodecContext->ch_layout.nb_channels;
+#endif
 
-                int channels    = audioCodecContext->ch_layout.nb_channels;
                 int out_samples = av_rescale_rnd(
                     swr_get_delay(swrCtx, frame->sample_rate) + frame->nb_samples,
                     frame->sample_rate, frame->sample_rate, AV_ROUND_UP);
@@ -335,7 +342,14 @@ bool Movie::available() {
                 // std::cout << "+++       channels: " << frame->ch_layout.nb_channels << std::endl;
 
                 if (fListener) {
+// ffmpeg API backward-compat
+// see -> https://ffmpeg.org/doxygen/5.1/deprecated.html
+// TODO better check API version with #include <libavutil/version.h>
+#if LIBAVCODEC_VERSION_MAJOR < 59
+                    fListener->movieAudioEvent(this, output_buffer, samples_converted, audioCodecContext->channels);
+#else
                     fListener->movieAudioEvent(this, output_buffer, samples_converted, frame->ch_layout.nb_channels);
+#endif
                 }
 
                 // Free the output buffer
